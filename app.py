@@ -13,6 +13,10 @@ def wodzionka():
     text = "<p>Mmmm. Wodzionka, suchy chlyb i wody szklonka.<br>Mmmm. Wodzionka, to nojlepszo z wszystkich ślonskich zup.<br> Mmmm. Wodzionka, jak jom zrobi moja żonka.<br> Mmmm. Wodzionka, to jes łósmy świata cud.</p>"
     return text
 
+@app.route("/olek/<tekst>")
+def papuga(test):
+    tekst = "<p>🦜" + test + "</p>"
+    return tekst
 
 @app.post("/json")
 def process_json():
