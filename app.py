@@ -1,4 +1,6 @@
 from flask import Flask, request
+import geopandas as gpd
+import json as jsn
 
 app = Flask(__name__)
 
@@ -14,8 +16,8 @@ def wodzionka():
     return text
 
 @app.route("/olek/<tekst>")
-def papuga(test):
-    tekst = "<p>🦜" + test + "</p>"
+def papuga(tekst):
+    tekst = "<p>🦜" + tekst + "</p>"
     return tekst
 
 
@@ -32,10 +34,10 @@ def process_json():
 
 @app.post("/centroid")
 def centroid():
-    json = request.json
-    json['x'] = 15
-    json['y'] = int(request.args.get('value'))
-    return json
+    json = jsn.dumps(request.json)
+    points = gpd.read_file(json, driver='GeoJSON')
+    centroid = points.dissolve().centroid
+    return centroid.to_json()
 
 
 if __name__ == "__main__":
