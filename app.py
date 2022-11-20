@@ -18,6 +18,11 @@ def papuga(test):
     tekst = "<p>🦜" + test + "</p>"
     return tekst
 
+
+@app.route("/Filip_Fujak")
+def grruszki_w_winie():
+    return "<p>Potem wrzucę przepis jak się rozbudzę ^^</p>"
+
 @app.post("/json")
 def process_json():
     json = request.json
