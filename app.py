@@ -30,6 +30,13 @@ def process_json():
     json['y'] = int(request.args.get('value'))
     return json
 
+@app.post("/centroid")
+def centroid():
+    json = request.json
+    json['x'] = 15
+    json['y'] = int(request.args.get('value'))
+    return json
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
