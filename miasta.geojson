@@ -1,0 +1,12 @@
+{
+"type": "FeatureCollection",
+"name": "miasta",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "nazwa": "Poznań" }, "geometry": { "type": "Point", "coordinates": [ 16.919889161818364, 52.39983786466027 ] } },
+{ "type": "Feature", "properties": { "nazwa": "Warszawa" }, "geometry": { "type": "Point", "coordinates": [ 21.009899133838765, 52.242997621050527 ] } },
+{ "type": "Feature", "properties": { "nazwa": "Gdańsk" }, "geometry": { "type": "Point", "coordinates": [ 18.646091089172977, 54.343214679456878 ] } },
+{ "type": "Feature", "properties": { "nazwa": "Kraków" }, "geometry": { "type": "Point", "coordinates": [ 19.936854692510217, 50.048439907692604 ] } },
+{ "type": "Feature", "properties": { "nazwa": "Wrocław" }, "geometry": { "type": "Point", "coordinates": [ 17.020973058465259, 51.105091273936416 ] } }
+]
+}
