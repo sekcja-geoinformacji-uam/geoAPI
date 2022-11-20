@@ -14,8 +14,8 @@ def wodzionka():
     return text
 
 @app.route("/olek/<tekst>")
-def papuga(test):
-    tekst = "<p>🦜" + test + "</p>"
+def papuga(tekst):
+    tekst = "<p>🦜" + tekst + "</p>"
     return tekst
 
 
