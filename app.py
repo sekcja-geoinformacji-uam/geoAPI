@@ -1,4 +1,6 @@
 from flask import Flask, request
+import geopandas as gpd
+import json as jsn
 
 app = Flask(__name__)
 
@@ -29,6 +31,13 @@ def process_json():
     json['x'] = 15
     json['y'] = int(request.args.get('value'))
     return json
+
+@app.post("/centroid")
+def centroid():
+    json = jsn.dumps(request.json)
+    points = gpd.read_file(json, driver='GeoJSON')
+    centroid = points.dissolve().centroid
+    return centroid.to_json()
 
 
 if __name__ == "__main__":
