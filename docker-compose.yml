@@ -2,6 +2,8 @@ version: '3.9'
 services:
   api:
     container_name: "api"
-    build: .
+    build: 
+      context: .
+      dockerfile: ./docker/Dockerfile
     ports:
       - "3333:5000"
