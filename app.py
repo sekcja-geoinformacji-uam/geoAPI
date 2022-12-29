@@ -1,4 +1,5 @@
 from flask import Flask, request
+import numpy as np
 import geopandas as gpd
 import json as jsn
 
@@ -43,8 +44,9 @@ def centroid():
 def nearest_neighbour():
     json = jsn.dumps(request.json)
     points = gpd.read_file(json, driver='GeoJSON')
-    centroid = points.dissolve().centroid
-    return centroid.to_json()
+    distance_matrix = np.array(points.geometry.apply(lambda x: points.distance(x).astype(np.int64)))
+    points['nearest'] = np.argmin(distance_matrix, axis=1)
+    return points.to_json()
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
