@@ -39,6 +39,12 @@ def centroid():
     centroid = points.dissolve().centroid
     return centroid.to_json()
 
+@app.post("/nearest_n")
+def nearest_neighbour():
+    json = jsn.dumps(request.json)
+    points = gpd.read_file(json, driver='GeoJSON')
+    centroid = points.dissolve().centroid
+    return centroid.to_json()
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
