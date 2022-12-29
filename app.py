@@ -46,11 +46,16 @@ def centroid():
 
 @app.post("/jenks")
 def jenks():
-    json = request.json
-    features = json["features"]
-    for feature, key in enumerate(features):
-        features[feature]["properties"]["class"] = randint(1, 5)
-    return features
+    nclass = request.args.get("nclass")
+    json = jsn.dumps(request.json)
+    points = gpd.read_file(json, driver='GeoJSON')
+    points["class"] = None
+    for id in points.index:
+        points["class"][id] = randint(1, int(nclass))
+    # features = json["features"]
+    # for feature, key in enumerate(features):
+    #     features[feature]["properties"]["class"] = randint(1, 5)
+    return points.to_json()
 
 
 if __name__ == "__main__":
