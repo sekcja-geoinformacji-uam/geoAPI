@@ -43,19 +43,29 @@ def centroid():
 @app.route("/medoid", methods=['POST'])
 def medoid():
     from shapely.wkt import loads
-    json = jsn.dumps(request.json)
-    #szukanie środka ciężkości
+    json = jsn.dumps(request.json)#szukanie środka ciężkości
     points = gpd.read_file(json, driver='GeoJSON')
     centroid = points.dissolve().centroid
     #szukanie najbliższego punktu do centroidu
     points['Dist'] = points.apply(lambda row: centroid.distance(row.geometry), axis=1)
     geoseries = points.iloc[points['Dist'].argmin()]
     #wybranie wiersza z koordynatami
+    #geoseries[0] oznacza nazwę punktu
     closest_point = geoseries[1]
-    # Create point from WKT string
+    # Strworzenie punktu z WKT POINT
     closest_point = loads(str(closest_point))
     output = str(closest_point)
-    return output
+    #wyciągnięcie odpowiednich danych z obiektu POINT
+    output = output.lstrip('POINT (').rstrip(')')
+    output_list = output.split(' ')
+    #stworzenie dictionary z nazwą punktu i koordynatami
+    dictionary = {
+        'name': geoseries[0],
+        'x': output_list[0],
+        'y': output_list[1]
+    }
+    if (request.args.get('json')=='True' or request.args.get('json')=='true'): return dictionary
+    else: return output 
 
 
 if __name__ == "__main__":
