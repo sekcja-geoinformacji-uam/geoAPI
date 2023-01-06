@@ -34,11 +34,16 @@ def process_json():
 
 @app.post("/centroid")
 def centroid():
+    dane = str(input('Proszę wybrać: para współrzędnych/plik GEOJSON'))
     json = jsn.dumps(request.json)
     points = gpd.read_file(json, driver='GeoJSON')
     centroid = points.dissolve().centroid
-    return centroid.to_json()
-
+    if dane == 'plik GEOJSON':
+        return centroid.to_json()
+    elif dane == 'para współrzędnych':
+        return (centroid)
+    else:
+        return ('Niewłaściwe polecenie')
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
