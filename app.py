@@ -7,6 +7,16 @@ import json as jsn
 
 app = Flask(__name__)
 
+def get_UTM_zone(bounds):
+        if math.ceil((bounds[2] + 180) / 6) - math.ceil((bounds[0] + 180) / 6) > 1:
+            return 3857
+        else:
+            zone = math.ceil(((bounds[2] + bounds[0]) / 2 + 180) / 6)
+            if bounds[3] >= 0:
+                crs = int("326" + str(zone))
+            else:
+                crs = int("327" + str(zone))
+            return crs
 
 @app.route("/")
 def hello_world():
@@ -44,17 +54,6 @@ def centroid():
 
 @app.post("/nearest_n")
 def nearest_neighbour():
-    def get_UTM_zone(bounds):
-        if math.ceil((bounds[2] + 180) / 6) - math.ceil((bounds[0] + 180) / 6) > 1:
-            return 3857
-        else:
-            zone = math.ceil(((bounds[2] + bounds[0]) / 2 + 180) / 6)
-            if bounds[3] >= 0:
-                crs = int("326" + str(zone))
-            else:
-                crs = int("327" + str(zone))
-            return crs
-
     json = jsn.dumps(request.json)
     points = gpd.read_file(json, driver='GeoJSON')
 
@@ -62,7 +61,7 @@ def nearest_neighbour():
     if points.crs.to_authority()[1] != str(crs):
         points.to_crs(epsg=crs, inplace=True)
     
-    if crs == 4326:
+    if crs == 4326 and int(request.args.get('crs', default=-1)) != 4326:
         crs = get_UTM_zone(points.total_bounds)
         points.to_crs(epsg=crs, inplace=True)
 
