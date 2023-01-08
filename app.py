@@ -1,5 +1,6 @@
 from flask import Flask, request
 import geopandas as gpd
+from jenkspy import JenksNaturalBreaks
 import json as jsn
 from random import randint
 
@@ -46,15 +47,23 @@ def centroid():
 
 @app.post("/jenks")
 def jenks():
-    nclass = request.args.get("nclass")
+    nclass = int(request.args.get("nclass"))
+    colname = request.args.get("colname")
+
     json = jsn.dumps(request.json)
     points = gpd.read_file(json, driver='GeoJSON')
-    points["class"] = None
-    for id in points.index:
-        points["class"][id] = randint(1, int(nclass))
-    # features = json["features"]
-    # for feature, key in enumerate(features):
-    #     features[feature]["properties"]["class"] = randint(1, 5)
+    
+    jnb = JenksNaturalBreaks(int(nclass))
+
+    try:
+        jnb.fit(points[colname])
+    except KeyError:
+        return {'KeyError': 'No column found named ' + colname}, 400
+    except TypeError:
+        return {'TypeError': 'Column must contain numeric values'}, 400
+
+    points["class"] = jnb.labels_
+
     return points.to_json()
 
 
