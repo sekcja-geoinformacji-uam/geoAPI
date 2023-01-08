@@ -53,7 +53,7 @@ def jenks():
     json = jsn.dumps(request.json)
     points = gpd.read_file(json, driver='GeoJSON')
     
-    jnb = JenksNaturalBreaks(int(nclass))
+    jnb = JenksNaturalBreaks(nclass)
 
     try:
         jnb.fit(points[colname])
