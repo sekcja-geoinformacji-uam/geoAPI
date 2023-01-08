@@ -4,6 +4,7 @@ import numpy as np
 import numpy.ma as ma
 import geopandas as gpd
 import json as jsn
+from pyproj.exceptions import CRSError
 
 app = Flask(__name__)
 
@@ -59,11 +60,18 @@ def nearest_neighbour():
 
     crs = int(request.args.get('crs', default=4326))
     if points.crs.to_authority()[1] != str(crs):
-        points.to_crs(epsg=crs, inplace=True)
+        try:
+            points.to_crs(epsg=crs, inplace=True)
+        except CRSError:
+            return {'CRSError': f'Projection EPSG:{crs} not found!'}, 400
     
     if crs == 4326 and int(request.args.get('crs', default=-1)) != 4326:
         crs = get_UTM_zone(points.total_bounds)
-        points.to_crs(epsg=crs, inplace=True)
+        try:
+            points.to_crs(epsg=crs, inplace=True)
+        except CRSError:
+            crs = 4326
+            pass
 
     distance_matrix = np.array(points.geometry.apply(lambda x: points.distance(x).astype(np.int64)))
     points['nearest_dist'] = np.min(ma.masked_array(distance_matrix, mask = distance_matrix==0), axis=1)
