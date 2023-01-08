@@ -2,7 +2,6 @@ from flask import Flask, request
 import geopandas as gpd
 from jenkspy import JenksNaturalBreaks
 import json as jsn
-from random import randint
 
 app = Flask(__name__)
 
