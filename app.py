@@ -111,27 +111,50 @@ def medoid():
     from shapely.wkt import loads
     json = jsn.dumps(request.json)#szukanie środka ciężkości
     points = gpd.read_file(json, driver='GeoJSON')
+
+    crs = int(request.args.get('crs', default=4326))
+    if points.crs.to_authority()[1] != str(crs):
+        try:
+            points.to_crs(epsg=crs, inplace=True)
+        except CRSError:
+            return {'CRSError': f'Projection EPSG:{crs} not found!'}, 400
+    
+    if crs == 4326 and int(request.args.get('crs', default=-1)) != 4326:
+        crs = get_UTM_zone(points.total_bounds)
+        try:
+            points.to_crs(epsg=crs, inplace=True)
+        except CRSError:
+            crs = 4326
+            pass
+
     centroid = points.dissolve().centroid
-    #szukanie najbliższego punktu do centroidu
+    # szukanie najbliższego punktu do centroidu
+    points['id'] = range(0, points.shape[0])
     points['Dist'] = points.apply(lambda row: centroid.distance(row.geometry), axis=1)
     geoseries = points.iloc[points['Dist'].argmin()]
-    #wybranie wiersza z koordynatami
-    #geoseries[0] oznacza nazwę punktu
+    # wybranie wiersza z koordynatami
+    # geoseries[0] oznacza nazwę punktu
     closest_point = geoseries[1]
-    # Strworzenie punktu z WKT POINT
-    closest_point = loads(str(closest_point))
-    output = str(closest_point)
-    #wyciągnięcie odpowiednich danych z obiektu POINT
-    output = output.lstrip('POINT (').rstrip(')')
-    output_list = output.split(' ')
-    #stworzenie dictionary z nazwą punktu i koordynatami
-    dictionary = {
-        'name': geoseries[0],
-        'x': output_list[0],
-        'y': output_list[1]
-    }
-    if (request.args.get('json')=='True' or request.args.get('json')=='true'): return dictionary
-    else: return output 
+    closest_point = str(closest_point)
+    # wyciągnięcie odpowiednich danych z obiektu POINT
+    output = closest_point.lstrip('POINT (').rstrip(')')
+    output_list_x_y = output.split(' ')
+
+    if(request.args.get('format')=='json'):
+        json_output = {
+            'name': geoseries[0],
+            'x': output_list_x_y[0],
+            'y': output_list_x_y[1]
+        }
+        return json_output
+    elif request.args.get('format')=='geojson':
+        geojson_output = points[points['id'] == points['Dist'].argmin()].to_json()
+        return geojson_output
+    elif request.args.get('format')=='point':
+        return output
+    else:
+        geojson_output = points[points['id'] == points['Dist'].argmin()].to_json()
+        return geojson_output
 
 
 if __name__ == "__main__":

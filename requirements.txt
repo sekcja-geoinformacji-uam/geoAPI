@@ -36,3 +36,4 @@ Werkzeug==2.2.2
 zipp==3.10.0
 geopandas==0.12.1
 geopy==2.3.0
+jenkspy==0.3.2
