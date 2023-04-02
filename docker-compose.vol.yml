@@ -3,5 +3,6 @@ services:
   api:
     volumes:
        - ./app.py:/app.py
+       - ./routes:/routes
     build: 
       dockerfile: ./docker/Dockerfile.vol

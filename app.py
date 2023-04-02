@@ -3,38 +3,10 @@ import geopandas as gpd
 from jenkspy import JenksNaturalBreaks
 import json as jsn
 
+from routes.misc import misc_bp
+
 app = Flask(__name__)
-
-
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
-
-@app.route("/tomek")
-def wodzionka():
-    text = "<p>Mmmm. Wodzionka, suchy chlyb i wody szklonka.<br>Mmmm. Wodzionka, to nojlepszo z wszystkich ślonskich zup.<br> Mmmm. Wodzionka, jak jom zrobi moja żonka.<br> Mmmm. Wodzionka, to jes łósmy świata cud.</p>"
-    return text
-
-
-@app.route("/olek/<tekst>")
-def papuga(tekst):
-    tekst = "<p>🦜" + tekst + "</p>"
-    return tekst
-
-
-@app.route("/Filip_Fujak")
-def grruszki_w_winie():
-    return "<p>Potem wrzucę przepis jak się rozbudzę ^^</p>"
-
-
-@app.post("/json")
-def process_json():
-    json = request.json
-    json['x'] = 15
-    json['y'] = int(request.args.get('value'))
-    return json
-
+app.register_blueprint(misc_bp, url_prefix='/misc')
 
 @app.post("/centroid")
 def centroid():
