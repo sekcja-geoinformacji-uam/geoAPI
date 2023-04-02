@@ -4,5 +4,6 @@ services:
     volumes:
        - ./app.py:/app.py
        - ./routes:/routes
+       - ./utils:/utils
     build: 
       dockerfile: ./docker/Dockerfile.vol

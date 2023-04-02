@@ -1,11 +1,11 @@
 from flask import Flask, request
-import math
 import numpy as np
 import numpy.ma as ma
 import geopandas as gpd
 from jenkspy import JenksNaturalBreaks
 import json as jsn
 from pyproj.exceptions import CRSError
+from utils.get_UTM_zone import get_UTM_zone
 
 from routes.misc import misc_bp
 
@@ -66,17 +66,6 @@ def jenks():
     points["class"] = jnb.labels_
 
     return points.to_json()
-
-def get_UTM_zone(bounds):
-        if math.ceil((bounds[2] + 180) / 6) - math.ceil((bounds[0] + 180) / 6) > 1:
-            return 3857
-        else:
-            zone = math.ceil(((bounds[2] + bounds[0]) / 2 + 180) / 6)
-            if bounds[3] >= 0:
-                crs = int("326" + str(zone))
-            else:
-                crs = int("327" + str(zone))
-            return crs
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
