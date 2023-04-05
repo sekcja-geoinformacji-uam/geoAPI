@@ -6,7 +6,7 @@ from utils.get_UTM_zone import get_UTM_zone
 
 lines_bp = Blueprint('lines', __name__)
 
-@lines_bp.route('/length')
+@lines_bp.post('/length')
 def length():
     json = jsn.dumps(request.json)
     lines = gpd.read_file(json, driver='GeoJSON')
