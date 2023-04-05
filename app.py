@@ -8,9 +8,11 @@ from pyproj.exceptions import CRSError
 from utils.get_UTM_zone import get_UTM_zone
 
 from routes.misc import misc_bp
+from routes.lines import lines_bp
 
 app = Flask(__name__)
 app.register_blueprint(misc_bp, url_prefix='/misc')
+app.register_blueprint(lines_bp, url_prefix='/lines')
 
 @app.post("/centroid")
 def centroid():
