@@ -6,11 +6,15 @@ from jenkspy import JenksNaturalBreaks
 import json as jsn
 from pyproj.exceptions import CRSError
 from utils.get_UTM_zone import get_UTM_zone
+from flasgger import Swagger
 
 from routes.misc import misc_bp
+from routes.general import general_bp
 
 app = Flask(__name__)
+swagger = Swagger(app)
 app.register_blueprint(misc_bp, url_prefix='/misc')
+app.register_blueprint(general_bp, url_prefix='/')
 
 @app.post("/centroid")
 def centroid():

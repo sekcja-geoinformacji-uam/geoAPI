@@ -1,0 +1,81 @@
+Returns a boundary box
+---
+parameters:
+  - in: body
+    name: geojson
+    description: The GeoJSON object to get the boundary box for
+    required: true
+    schema:
+      type: object
+      properties:
+        type:
+          type: string
+          example: FeatureCollection
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                example: Feature
+              geometry:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: Polygon
+                  coordinates:
+                    type: array
+                    example: [[[102.0, 2.0], [103.0, 2.0], [103.0, 3.0], [102.0, 3.0], [102.0, 2.0]]]
+    example:
+      {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [102.0, 2.0],
+                  [103.0, 2.0],
+                  [103.0, 3.0],
+                  [102.0, 3.0],
+                  [102.0, 2.0]
+                ]
+              ]
+            }
+          }
+        ]
+      }
+responses:
+  200:
+    description: Returns the boundary box of the GeoJSON object
+    schema:
+      type: object
+      properties:
+        minx:
+          type: number
+          example: 102.0
+        miny:
+          type: number
+          example: 2.0
+        maxx:
+          type: number
+          example: 103.0
+        maxy:
+          type: number
+          example: 3.0
+    examples:
+      application/json:
+        {
+          "minx": 102.0,
+          "miny": 2.0,
+          "maxx": 103.0,
+          "maxy": 3.0
+        }
+  400:
+    description: Invalid request body
+  500:
+    description: Internal server error
