@@ -1,6 +1,8 @@
 from flask import Blueprint, request
 import json as jsn
+import numpy as np
 import geopandas as gpd
+from shapely import Point, get_coordinates
 from pyproj.exceptions import CRSError
 from utils.get_UTM_zone import get_UTM_zone
 
@@ -28,3 +30,15 @@ def length():
     
     lines['length'] = lines.length
     return lines.to_json()
+
+@lines_bp.post('/vertices')
+def vertices():
+    json = jsn.dumps(request.json)
+    lines = gpd.read_file(json, driver='GeoJSON')
+
+    coords, idx = get_coordinates(lines, return_index=True)
+    sequences = [n for i in np.unique(idx, return_counts=True)[1].tolist() for n in range(0, i)]
+    
+    points = [Point(x, y) for x, y in coords.tolist()]
+    points = gpd.GeoDataFrame({'line': idx.tolist(), 'sequence': sequences, 'geometry': points})
+    return points.to_json()
