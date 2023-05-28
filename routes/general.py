@@ -11,4 +11,10 @@ def bbox():
     json = jsn.dumps(request.json)
     layer = gpd.read_file(json, driver='GeoJSON')
     bbox = layer.bounds
-    return bbox.to_json()
+    response = {
+        'minx': bbox.minx[0],
+        'miny': bbox.miny[0],
+        'maxx': bbox.maxx[0],
+        'maxy': bbox.maxy[0]
+    }
+    return response, 200
