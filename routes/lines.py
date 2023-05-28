@@ -2,7 +2,8 @@ from flask import Blueprint, request
 import json as jsn
 import numpy as np
 import geopandas as gpd
-from shapely import Point, get_coordinates
+from shapely.geometry import Point
+from shapely.coordinates import get_coordinates
 from pyproj.exceptions import CRSError
 from utils.get_UTM_zone import get_UTM_zone
 
