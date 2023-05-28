@@ -1,0 +1,218 @@
+
+Returns each features nearest neighbour
+---
+tags:
+  - points
+parameters:
+  - in: body
+    name: geojson
+    description: GeoJSON
+    schema:
+      type: object
+      properties:
+        type:
+          type: string
+          example: FeatureCollection
+        features:
+          type: array
+          example: 
+            - type: Feature
+              geometry:
+                type: Point
+                coordinates:
+                  - - 18.489934269664985
+                    - -0.20029083631332867
+            - type: Feature
+              geometry:
+                type: Point
+                coordinates:
+                  - - 21.08132749368798
+                    - 2.608674477317024
+    example:
+      application/json:
+          example:
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [
+                                16.919889161818364,
+                                52.39983786466027
+                            ]
+                        }
+                    },
+                    {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [
+                                21.009899133838765,
+                                52.242997621050527
+                            ]
+                        }
+                    },
+                    {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [
+                                18.646091089172977,
+                                54.343214679456878
+                            ]
+                        }
+                    },
+                    {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [
+                                19.936854692510217,
+                                50.048439907692604
+                            ]
+                        }
+                    },
+                    {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [
+                                17.020973058465259,
+                                51.105091273936416
+                            ]
+                        }
+                    }
+                ]
+            }
+
+responses:
+  200:
+    description: Returns the GeoJSON with 
+    schema:
+      type: object
+      properties:
+        type:
+          type: string
+          example: FeatureCollection
+        features:
+          type: array
+          example: 
+            - type: Feature
+              id:
+                type: integer
+                example: 1
+              properties:
+                type: object
+                example:
+                  nearest_dist: 
+                    type: integer
+                    example: 144305
+                  nearest:  
+                    type: integer
+                    example: 4
+                  epsg_used: 
+                    type: integer
+                    example: 32634
+              geometry:
+                type: object
+                example:
+                  type: 
+                    type: string
+                    example: Point
+                  coordinates:
+                    type: array
+                    example: [18.489934269664985, -0.20029083631332867]
+
+    examples:
+      application/json:
+        {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": "0",
+            "type": "Feature",
+            "properties": {
+                "nearest_dist": 144305,
+                "nearest": 4,
+                "epsg_used": 32634
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    16.919889161818364,
+                    52.39983786466027
+                ]
+            }
+        },
+        {
+            "id": "1",
+            "type": "Feature",
+            "properties": {
+                "nearest_dist": 255329,
+                "nearest": 3,
+                "epsg_used": 32634
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    21.009899133838765,
+                    52.24299762105052
+                ]
+            }
+        },
+        {
+            "id": "2",
+            "type": "Feature",
+            "properties": {
+                "nearest_dist": 244935,
+                "nearest": 0,
+                "epsg_used": 32634
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    18.646091089172977,
+                    54.34321467945687
+                ]
+            }
+        },
+        {
+            "id": "3",
+            "type": "Feature",
+            "properties": {
+                "nearest_dist": 237629,
+                "nearest": 4,
+                "epsg_used": 32634
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    19.936854692510217,
+                    50.048439907692604
+                ]
+            }
+        },
+        {
+            "id": "4",
+            "type": "Feature",
+            "properties": {
+                "nearest_dist": 144305,
+                "nearest": 0,
+                "epsg_used": 32634
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    17.02097305846526,
+                    51.10509127393642
+                ]
+            }
+        }
+    ]
+}
+  400:
+    description: Invalid request body
+  500:
+    description: Internal server error

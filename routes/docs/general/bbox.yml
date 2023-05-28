@@ -1,0 +1,105 @@
+Returns a boundary box of a feature
+---
+tags:
+  - general
+description: tesutje
+parameters:
+  - in: body
+    name: geojson
+    description: GeoJSON
+    schema:
+      type: object
+      properties:
+        type:
+          type: string
+          example: FeatureCollection
+        features:
+          type: array
+          example: 
+            - type: Feature
+              geometry:
+                type: LineString
+                coordinates:
+                  - - 18.489934269664985
+                    - -0.20029083631332867
+                  - - 21.08132749368798
+                    - 2.608674477317024
+                  - - 21.94247107309502
+                    - -0.26202740180424655
+                  - - 23.932655541045392
+                    - 1.160147046483928
+                  - - 25.6527303032627
+                    - 3.0061004208610598
+                  - - 27.731094209682965
+                    - 4.7432417285735795
+    example:
+      application/json:
+          example:
+           {
+            "type": "FeatureCollection",
+            "features": [
+              {
+                "type": "Feature",
+                "geometry": {
+                  "coordinates": [
+                    [
+                      18.489934269664985,
+                      -0.20029083631332867
+                    ],
+                    [
+                      21.08132749368798,
+                      2.608674477317024
+                    ],
+                    [
+                      21.94247107309502,
+                      -0.26202740180424655
+                    ],
+                    [
+                      23.932655541045392,
+                      1.160147046483928
+                    ],
+                    [
+                      25.6527303032627,
+                      3.0061004208610598
+                    ],
+                    [
+                      27.731094209682965,
+                      4.7432417285735795
+                    ]
+                  ],
+                  "type": "LineString"
+                }
+              }
+            ]
+          }
+
+responses:
+  200:
+    description: Returns the boundary box of the GeoJSON object
+    schema:
+      type: object
+      properties:
+        minx:
+          type: number
+          example: 102.0
+        miny:
+          type: number
+          example: 2.0
+        maxx:
+          type: number
+          example: 103.0
+        maxy:
+          type: number
+          example: 3.0
+    examples:
+      application/json:
+        {
+            "maxx": 27.731094209682965,
+            "maxy": 4.7432417285735795,
+            "minx": 18.489934269664985,
+            "miny": -0.26202740180424655
+        }
+  400:
+    description: Invalid request body
+  500:
+    description: Internal server error
