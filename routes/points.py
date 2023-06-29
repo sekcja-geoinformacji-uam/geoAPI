@@ -11,6 +11,7 @@ from utils.get_UTM_zone import get_UTM_zone
 points_bp = Blueprint('points', __name__)
 
 @points_bp.post('/centroid')
+@swag_from('./docs/points/centroid.yml')
 def centroid():
     json = jsn.dumps(request.json)
     points = gpd.read_file(json, driver='GeoJSON')
