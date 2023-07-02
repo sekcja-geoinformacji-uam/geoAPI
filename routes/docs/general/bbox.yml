@@ -86,11 +86,8 @@ responses:
           type: array
           items:
             type: array
-            items:
-              - type: number
-                example: 102.0
-              - type: number
-                example: 2.0
+            example: [18.489934269664985, -0.20029083631332867]
+
     examples:
       application/json:
         {
@@ -120,6 +117,7 @@ responses:
         ]
           ]
         }
+
   400:
     description: Invalid request body
   500:

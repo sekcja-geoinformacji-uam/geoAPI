@@ -18,4 +18,15 @@ def bbox():
                        (bbox.maxx[0], bbox.miny[0]),
                        (bbox.minx[0], bbox.miny[0])])
     response = {"type": "Polygon", "coordinates": [list(polygon.exterior.coords)]}
-    return jsn.dumps(response), 200
+    return response, 200
+
+@general_bp.post('/centroid')
+@swag_from('./docs/general/centroid.yml')
+def centroid():
+    json = jsn.dumps(request.json)
+    points = gpd.read_file(json, driver='GeoJSON')
+    centroid = points.dissolve().centroid
+    centroid_json = jsn.loads(centroid.to_json())
+    response = centroid_json['features'][0]['geometry']
+
+    return response
