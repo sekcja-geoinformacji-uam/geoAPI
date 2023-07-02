@@ -75,29 +75,50 @@ parameters:
 
 responses:
   200:
-    description: Returns the boundary box of the GeoJSON object
+    description: Returns a GeoJSON polygon representing the boundary box of the GeoJSON object
     schema:
       type: object
       properties:
-        minx:
-          type: number
-          example: 102.0
-        miny:
-          type: number
-          example: 2.0
-        maxx:
-          type: number
-          example: 103.0
-        maxy:
-          type: number
-          example: 3.0
+        type:
+          type: string
+          example: Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              - type: number
+                example: 102.0
+              - type: number
+                example: 2.0
     examples:
       application/json:
         {
-            "maxx": 27.731094209682965,
-            "maxy": 4.7432417285735795,
-            "minx": 18.489934269664985,
-            "miny": -0.26202740180424655
+          "type": "Polygon",
+          "coordinates": [
+        [
+            [
+                18.489934269664985,
+                -0.26202740180424655
+            ],
+            [
+                18.489934269664985,
+                4.7432417285735795
+            ],
+            [
+                27.731094209682965,
+                4.7432417285735795
+            ],
+            [
+                27.731094209682965,
+                -0.26202740180424655
+            ],
+            [
+                18.489934269664985,
+                -0.26202740180424655
+            ]
+        ]
+          ]
         }
   400:
     description: Invalid request body

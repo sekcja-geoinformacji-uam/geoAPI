@@ -11,8 +11,8 @@ template = {
     },
     "version": "0.0.1"
   },
-  "host": "mysite.com",  # overrides localhost:500
-  "basePath": "/api",  # base bash for blueprint registration
+  "host": "localhost:3333",  # overrides localhost:500
+  "basePath": "",  # base bash for blueprint registration
   "schemes": [
     "http",
     "https"
