@@ -30,3 +30,16 @@ def centroid():
     response = centroid_json['features'][0]['geometry']
 
     return response
+
+@general_bp.post('/buffer')
+@swag_from('./docs/general/buffer.yml')
+def buffer():
+    payload = request.json
+    buffer = payload['buffer']
+    geojson = payload['geojson']
+    geom = gpd.read_file(jsn.dumps(geojson), driver='GeoJSON')
+    buffered = geom.buffer(buffer)
+    buffered_json = jsn.loads(buffered.to_json())
+    response = buffered_json['features'][0]['geometry']
+    return response, 200
+
