@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from flasgger import swag_from
 import json as jsn
 import numpy as np
 import geopandas as gpd
@@ -10,6 +11,7 @@ from utils.get_UTM_zone import get_UTM_zone
 lines_bp = Blueprint('lines', __name__)
 
 @lines_bp.post('/length')
+@swag_from('./docs/lines/length.yml')
 def length():
     json = jsn.dumps(request.json)
     lines = gpd.read_file(json, driver='GeoJSON')

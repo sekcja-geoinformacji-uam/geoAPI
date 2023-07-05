@@ -1,0 +1,200 @@
+Returns a length of a line. 
+---
+tags:
+  - lines
+parameters:
+  - in: body
+    name: geojson
+    description: GeoJSON
+    schema:
+      type: object
+      properties:
+        type:
+          type: string
+          example: FeatureCollection
+        features:
+          type: array
+          items:
+            $ref: '#/definitions/Feature'
+      example:
+        {
+          "type": "FeatureCollection",
+          "name": "linia",
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+            }
+          },
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    16.091778777749607,
+                    52.823588209740336
+                  ],
+                  [
+                    16.385310862243465,
+                    52.76599196631429
+                  ],
+                  [
+                    16.571927286822344,
+                    52.60691369883081
+                  ],
+                  [
+                    16.997646005392905,
+                    52.491071413145924
+                  ],
+                  [
+                    17.141496166005787,
+                    52.412882798355916
+                  ],
+                  [
+                    17.085122454414247,
+                    52.31792253901737
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    16.468250464241162,
+                    52.451835290244595
+                  ],
+                  [
+                    16.657680686755885,
+                    52.1108608897181
+                  ],
+                  [
+                    17.16703750729547,
+                    52.10384495555089
+                  ],
+                  [
+                    17.376112345478383,
+                    52.255389133562666
+                  ],
+                  [
+                    17.210536299132183,
+                    52.64126551275932
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+definitions:
+  Feature:
+    type: object
+    properties:
+      type:
+        type: string
+        example: Linestring
+      coordinates:
+        type: array
+        items:
+          type: number
+          format: float
+          example: 18.489934269664985
+
+responses:
+  200:
+    description: Returns the GeoJSON with a length property
+    schema:
+      type: object
+      properties:
+        type: 
+          type: string
+          example: Linestring
+        coordinates:
+          type: array
+          example: [18.489934269664985, -0.20029083631332867]
+
+    examples:
+      application/json:
+       {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "id": "0",
+              "type": "Feature",
+              "properties": {
+                "length": 98485.70534088358
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    573566.7766912347,
+                    5853204.96497546
+                  ],
+                  [
+                    593468.1678444413,
+                    5847139.286666258
+                  ],
+                  [
+                    606444.7221630957,
+                    5829704.589250173
+                  ],
+                  [
+                    635626.7279920073,
+                    5817534.730070439
+                  ],
+                  [
+                    645649.8493012701,
+                    5809119.188449319
+                  ],
+                  [
+                    642120.625105566,
+                    5798446.451613578
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "1",
+              "type": "Feature",
+              "properties": {
+                "length": 141466.14164828125
+              },
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    599775.4319363957,
+                    5812308.231462559
+                  ],
+                  [
+                    613515.4755385278,
+                    5774664.70945174
+                  ],
+                  [
+                    648415.1645177931,
+                    5774803.529635323
+                  ],
+                  [
+                    662179.8892702329,
+                    5792103.794925092
+                  ],
+                  [
+                    649566.8132065758,
+                    5834659.311466399
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+
+  400:
+    description: Invalid request body
+  500:
+    description: Internal server error
