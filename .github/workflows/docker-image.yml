@@ -17,7 +17,7 @@ jobs:
 
       # Krok 2: Zbuduj i uruchom kontenery
       - name: Build Docker Compose
-        run: docker-compose up --build
+        run: docker-compose up -d --build
 
       # Krok 4: Poczekaj na uruchomienie aplikacji w kontenerze
       - name: Wait for Application Startup
