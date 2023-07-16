@@ -3,6 +3,7 @@ from flasgger import swag_from
 import geopandas as gpd
 import json as jsn
 from shapely.geometry import Polygon
+from jenkspy import JenksNaturalBreaks
 
 general_bp = Blueprint('general', __name__)
 
@@ -43,3 +44,24 @@ def buffer():
     response = buffered_json['features'][0]['geometry']
     return response, 200
 
+@general_bp.post("/jenks")
+@swag_from('./docs/general/jenks.yml')
+def jenks():
+    nclass = int(request.args.get("nclass"))
+    colname = request.args.get("colname")
+
+    json = jsn.dumps(request.json)
+    features = gpd.read_file(json, driver='GeoJSON')
+
+    jnb = JenksNaturalBreaks(nclass)
+
+    try:
+        jnb.fit(features[colname])
+    except KeyError:
+        return {'KeyError': 'No column found named ' + colname}, 400
+    except TypeError:
+        return {'TypeError': 'Column must contain numeric values'}, 400
+
+    features["class"] = jnb.labels_
+    response = jsn.loads(features.to_json())
+    return response, 200
