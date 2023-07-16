@@ -1,0 +1,32 @@
+name: Docker Compose CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_test:
+    name: Build Docker Compose and test
+    runs-on: ubuntu-latest
+
+    steps:
+      # Krok 1: Sklonuj repozytorium
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Krok 2: Zbuduj i uruchom kontenery
+      - name: Build Docker Compose
+        run: docker-compose up --build
+
+      # Krok 4: Poczekaj na uruchomienie aplikacji w kontenerze
+      - name: Wait for Application Startup
+        run: sleep 10 # Możesz zwiększyć czas w zależności od czasu potrzebnego na uruchomienie aplikacji
+
+      # Krok 5: Sprawdź, czy strona Swaggera jest dostępna
+      - name: Check Swagger Documentation
+        run: curl -sSf http://localhost:3333/apidocs > /dev/null
+
+      # Krok 6: Wyłącz kontenery z Docker Compose po zakończonym teście
+      - name: Stop Docker Compose
+        run: docker-compose down
