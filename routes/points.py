@@ -1,10 +1,9 @@
+import json as jsn
 from flask import Blueprint, request
 from flasgger import swag_from
 import geopandas as gpd
-import json as jsn
 import numpy as np
 import numpy.ma as ma
-from jenkspy import JenksNaturalBreaks
 from pyproj.exceptions import CRSError
 from utils.get_UTM_zone import get_UTM_zone
 
@@ -38,23 +37,3 @@ def nearest_neighbour():
     points.to_crs(epsg=4326, inplace=True)
     return points.to_json()
 
-@points_bp.post("/jenks")
-def jenks():
-    nclass = int(request.args.get("nclass"))
-    colname = request.args.get("colname")
-
-    json = jsn.dumps(request.json)
-    points = gpd.read_file(json, driver='GeoJSON')
-    
-    jnb = JenksNaturalBreaks(nclass)
-
-    try:
-        jnb.fit(points[colname])
-    except KeyError:
-        return {'KeyError': 'No column found named ' + colname}, 400
-    except TypeError:
-        return {'TypeError': 'Column must contain numeric values'}, 400
-
-    points["class"] = jnb.labels_
-
-    return points.to_json()
