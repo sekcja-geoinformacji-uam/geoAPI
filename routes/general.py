@@ -4,14 +4,14 @@ import geopandas as gpd
 import json as jsn
 from shapely.geometry import Polygon
 from jenkspy import JenksNaturalBreaks
+from utils.read_data import read_data
 
 general_bp = Blueprint('general', __name__)
 
 @general_bp.post('/bbox')
 @swag_from('./docs/general/bbox.yml')
 def bbox():
-    json = jsn.dumps(request.json)
-    layer = gpd.read_file(json, driver='GeoJSON')
+    layer = read_data(request.json)
     bbox = layer.bounds
     polygon = Polygon([(bbox.minx[0], bbox.miny[0]),
                        (bbox.minx[0], bbox.maxy[0]),
