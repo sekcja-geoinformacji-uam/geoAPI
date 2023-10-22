@@ -6,14 +6,14 @@ import numpy as np
 import numpy.ma as ma
 from pyproj.exceptions import CRSError
 from utils.get_UTM_zone import get_UTM_zone
+from utils.read_data import read_data
 
 points_bp = Blueprint('points', __name__)
 
 @points_bp.post("/nearest_n")
 @swag_from('./docs/points/nearest_n.yml')
 def nearest_neighbour():
-    json = jsn.dumps(request.json)
-    points = gpd.read_file(json, driver='GeoJSON')
+    points = read_data(request.json)
 
     crs = int(request.args.get('crs', default=4326))
     if points.crs.to_authority()[1] != str(crs):

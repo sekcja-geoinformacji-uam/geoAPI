@@ -4,14 +4,14 @@ import geopandas as gpd
 import json as jsn
 from shapely.geometry import Polygon
 from jenkspy import JenksNaturalBreaks
+from utils.read_data import read_data
 
 general_bp = Blueprint('general', __name__)
 
 @general_bp.post('/bbox')
 @swag_from('./docs/general/bbox.yml')
 def bbox():
-    json = jsn.dumps(request.json)
-    layer = gpd.read_file(json, driver='GeoJSON')
+    layer = read_data(request.json)
     bbox = layer.bounds
     polygon = Polygon([(bbox.minx[0], bbox.miny[0]),
                        (bbox.minx[0], bbox.maxy[0]),
@@ -24,8 +24,7 @@ def bbox():
 @general_bp.post('/centroid')
 @swag_from('./docs/general/centroid.yml')
 def centroid():
-    json = jsn.dumps(request.json)
-    points = gpd.read_file(json, driver='GeoJSON')
+    points = read_data(request.json)
     centroid = points.dissolve().centroid
     centroid_json = jsn.loads(centroid.to_json())
     response = centroid_json['features'][0]['geometry']
@@ -38,7 +37,7 @@ def buffer():
     payload = request.json
     buffer = payload['buffer']
     geojson = payload['geojson']
-    geom = gpd.read_file(jsn.dumps(geojson), driver='GeoJSON')
+    geom = read_data(geojson)
     buffered = geom.buffer(buffer)
     buffered_json = jsn.loads(buffered.to_json())
     response = buffered_json['features'][0]['geometry']
@@ -50,8 +49,7 @@ def jenks():
     nclass = int(request.args.get("nclass"))
     colname = request.args.get("colname")
 
-    json = jsn.dumps(request.json)
-    features = gpd.read_file(json, driver='GeoJSON')
+    features = read_data(request.json)
 
     jnb = JenksNaturalBreaks(nclass)
 
