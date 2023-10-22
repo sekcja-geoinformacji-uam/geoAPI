@@ -7,14 +7,14 @@ from shapely.geometry import Point, MultiPoint
 from shapely.coordinates import get_coordinates
 from pyproj.exceptions import CRSError
 from utils.get_UTM_zone import get_UTM_zone
+from utils.read_data import read_data
 
 lines_bp = Blueprint('lines', __name__)
 
 @lines_bp.post('/length')
 @swag_from('./docs/lines/length.yml')
 def length():
-    json = jsn.dumps(request.json)
-    lines = gpd.read_file(json, driver='GeoJSON')
+    lines = read_data(request.json)
 
     crs = int(request.args.get('crs', default=4326))
     if lines.crs.to_authority()[1] != str(crs):
@@ -36,8 +36,7 @@ def length():
 
 @lines_bp.post('/vertices')
 def vertices():
-    json = jsn.dumps(request.json)
-    lines = gpd.read_file(json, driver='GeoJSON')
+    lines = read_data(request.json)
 
     coords, idx = get_coordinates(lines, return_index=True)
     sequences = [n for i in np.unique(idx, return_counts=True)[1].tolist() for n in range(0, i)]
