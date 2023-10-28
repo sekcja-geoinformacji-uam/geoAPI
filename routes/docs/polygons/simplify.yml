@@ -1,0 +1,170 @@
+
+Returns a simplified polygon
+---
+tags:
+  - polygons
+parameters:
+  - in: query
+    name: tolerance
+    description: Tolerance value
+    type: float
+  - in: body
+    name: geojson
+    description: GeoJSON
+    schema:
+      type: object
+      properties:
+        type:
+          type: string
+          example: FeatureCollection
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                example: Feature
+              properties:
+                type: object
+              geometry:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: Polygon
+                  coordinates:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: number
+      example:
+        {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [11.592319296849269, 53.091768209165934],
+                    [11.37620336854323, 53.136959947877415],
+                    [11.399906405841364, 53.03479250822849],
+                    [11.521210184954867, 53.0163430560803],
+                    [11.77776070629838, 53.04149944357155],
+                    [11.787520780480008, 53.116043751403055],
+                    [12.042677005512758, 53.12106456694087],
+                    [11.998059523539268, 53.19129442933894],
+                    [11.751269076377412, 53.18628182024065],
+                    [11.592319296849269, 53.091768209165934]
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+
+
+responses:
+  200:
+    description: Returns the GeoJSON with 
+    schema:
+      type: object
+      properties:
+        type:
+          type: string
+          example: FeatureCollection
+        features:
+          type: array
+          example: 
+            - type: Feature
+              id:
+                type: integer
+                example: 1
+              geometry:
+                type: object
+                example:
+                  type: 
+                    type: string
+                    example: Polygom
+                  coordinates:
+                    type: array
+                    example:  [
+                        [
+                            11.592319296849269,
+                            53.091768209165934
+                        ],
+                        [
+                            11.37620336854323,
+                            53.136959947877415
+                        ],
+                        [
+                            11.521210184954867,
+                            53.0163430560803
+                        ],
+                        [
+                            12.042677005512758,
+                            53.12106456694087
+                        ],
+                        [
+                            11.592319296849269,
+                            53.091768209165934
+                        ]
+                    ]
+
+    examples:
+      application/json:
+       {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": "0",
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [
+                        13.337792779982749,
+                        52.74113257061373
+                    ],
+                    [
+                        17.8979369695233,
+                        52.74113257061373
+                    ],
+                    [
+                        17.8979369695233,
+                        52.90470818452252
+                    ],
+                    [
+                        13.337792779982749,
+                        52.90470818452252
+                    ],
+                    [
+                        13.337792779982749,
+                        52.74113257061373
+                    ]
+                ]
+            },
+            "bbox": [
+                13.337792779982749,
+                52.74113257061373,
+                17.8979369695233,
+                52.90470818452252
+            ]
+        }
+    ],
+    "bbox": [
+        13.337792779982749,
+        52.74113257061373,
+        17.8979369695233,
+        52.90470818452252
+    ]
+}
+  400:
+    description: Invalid request body
+  500:
+    description: Internal server error
